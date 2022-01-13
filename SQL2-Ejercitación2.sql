@@ -24,14 +24,10 @@ INNER JOIN curso ON curso.PROFESOR_id = profesor.id
 ORDER BY curso.nombre
 
 -- 5) Cupo disponible para cada curso (si el cupo es de 35 estudiantes y hay 5 inscriptos, el cupo disponible será 30)
-SELECT curso.nombre, curso.cupo -
-	(SELECT COUNT(*)
-	FROM estudiante
-	INNER JOIN inscripcion ON inscripcion.ESTUDIANTE_legajo = estudiante.legajo
-	GROUP BY inscripcion.CURSO_codigo) 
-	AS cupo_disponible
-FROM curso
-INNER JOIN inscripcion ON inscripcion.CURSO_codigo = curso.codigo
+SELECT curso.nombre, curso.cupo - count(*) AS cupo_disponible 
+FROM curso 
+INNER JOIN inscripcion ON curso.codigo = CURSO_codigo 
+GROUP BY curso.codigo
 
 -- 6) Cursos cuyo cupo disponible sea menor que 10
 SELECT nombre
